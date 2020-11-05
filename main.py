@@ -1,16 +1,16 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
+import data_loader as dl
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    data = dl.load_data('data/winequality-red.csv')          # import data file
+    df0 = dl.into_dataframe(data)      # change imported data into data frame
+    # print(df0)
+
+df0_features = dl.get_features(df0, 'quality')
+# print(df0_features)
+df0_labels = dl.get_labels(df0, 'quality')
+# print(df0_labels)
+
+
+
