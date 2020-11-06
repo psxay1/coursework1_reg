@@ -15,7 +15,7 @@ model.add(Dense(1, activation='relu'))
 model.summary()
 
 model.compile(loss='mse', optimizer='adam', metrics=['mse', 'mae'])
-history = model.fit(x_train_scale, y_train_scale, epochs=30, batch_size=150, verbose=1, validation_split=0.2)
+history = model.fit(x_train_scale, y_train_scale, epochs=1000, batch_size=150, verbose=1, validation_split=0.2)
 predictions = model.predict(x_test_scale)
 print(history.history.keys())
 # "Loss"

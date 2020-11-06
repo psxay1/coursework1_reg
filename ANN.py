@@ -1,6 +1,7 @@
 import tensorflow as tf
 import preprocessing as pp
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 tf.set_random_seed(13)  # to make sure the experiment is reproducible
 
@@ -12,8 +13,8 @@ test_y = pp.y_test
 # Network parameters
 
 n_hidden1 = 50
-n_hidden2 = 20
-n_input = 12
+n_hidden2 = 25
+n_input = 11
 n_output = 1
 
 # Learning parameters
