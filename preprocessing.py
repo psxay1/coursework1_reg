@@ -13,7 +13,6 @@ x = df0_features.to_numpy()
 
 y = df0_labels.to_numpy().reshape(-1, 1)
 
-
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.4, random_state=27)
 
 # normalizing feature_train & feature_test

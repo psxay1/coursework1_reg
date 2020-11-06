@@ -1,6 +1,5 @@
 import tensorflow as tf
 import preprocessing as pp
-import matplotlib.pyplot as plt
 import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -13,14 +12,14 @@ test_y = pp.y_test
 
 # Network parameters
 
-n_hidden1 = 50
-n_hidden2 = 25
+n_hidden1 = 20
+n_hidden2 = 20
 n_input = 11
 n_output = 1
 
 # Learning parameters
 
-learning_constant = 0.01
+learning_constant = 0.001
 training_epochs = 1500
 
 # Defining input and output
@@ -47,7 +46,7 @@ out_layer = tf.add(tf.matmul(layer_2, w3), b3)
 # learning rate 0.001
 
 cost = tf.reduce_mean(tf.math.squared_difference(out_layer, y))
-optimizer = tf.train.GradientDescentOptimizer(0.001).minimize(cost)
+optimizer = tf.train.GradientDescentOptimizer(learning_constant).minimize(cost)
 
 init = tf.global_variables_initializer()
 
@@ -56,10 +55,9 @@ with tf.Session() as sess:
     sess.run(init)
     for epoch in range(1500):
         opt, cost_val = sess.run([optimizer, cost], feed_dict={X: train_x, y: train_y})
+        pred = tf.equal(tf.argmax(out_layer, axis=1), tf.argmax(y, axis=1))
+        accuracy = tf.reduce_mean(tf.cast(pred, 'float'))
         if epoch % 100 == 0:
             print("Epoch", epoch, "--", "Cost", cost_val)
-
-    pred = tf.equal(tf.argmax(out_layer, axis=1), tf.argmax(y, axis=1))
-    accuracy = tf.reduce_mean(tf.cast(pred, 'float'))
-    print("Accuracy on train set ", accuracy.eval({X: train_x, y: train_y}))
-    print("Accuracy on test set ", accuracy.eval({X: test_x, y: test_y}))
+            print("Accuracy on train set ", accuracy.eval({X: train_x, y: train_y}))
+            print("Accuracy on test set ", accuracy.eval({X: test_x, y: test_y}))
