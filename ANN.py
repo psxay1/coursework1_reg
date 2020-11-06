@@ -1,5 +1,6 @@
 import tensorflow as tf
 import preprocessing as pp
+import matplotlib.pyplot as plt
 import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -55,9 +56,10 @@ with tf.Session() as sess:
     sess.run(init)
     for epoch in range(1500):
         opt, cost_val = sess.run([optimizer, cost], feed_dict={X: train_x, y: train_y})
-        matches = tf.equal(tf.argmax(out_layer, 1), tf.argmax(y, 1))
-        accuracy = tf.reduce_mean(tf.cast(matches, 'float'))
-        acc.append(accuracy.eval({X: test_x, y: test_y}))
         if epoch % 100 == 0:
             print("Epoch", epoch, "--", "Cost", cost_val)
-            print("Accuracy on test set ", accuracy.eval({X: test_x, y: test_y}))
+
+    pred = tf.equal(tf.argmax(out_layer, axis=1), tf.argmax(y, axis=1))
+    accuracy = tf.reduce_mean(tf.cast(pred, 'float'))
+    print("Accuracy on train set ", accuracy.eval({X: train_x, y: train_y}))
+    print("Accuracy on test set ", accuracy.eval({X: test_x, y: test_y}))
