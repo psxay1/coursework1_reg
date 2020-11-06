@@ -3,6 +3,7 @@ import pandas as pd
 
 def load_data(x):
     m = pd.read_csv(x, sep=';')
+    m.head()
     return m
 
 
@@ -19,6 +20,3 @@ def get_features(x, y):
 def get_labels(x, y):
     m = x.pop(y)
     return m
-
-
-
