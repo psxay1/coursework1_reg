@@ -26,8 +26,9 @@ model.summary()
 # optimization function is defined, using sgd: gradient descent optimizer with learning rate, in built optimizer used for regression
 sgd = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
 # cost function is defined using mean square error mse, and mean absolute error mae
+
 model.compile(loss='mse', optimizer='sgd', metrics=['mse', 'mae', 'accuracy'])
-history = model.fit(x_train_scale, y_train_scale, epochs=800, batch_size=100, verbose=1, validation_split=0.2)
+history = model.fit(x_train_scale, y_train_scale, epochs=1000, batch_size=100, verbose=1, validation_split=0.2)
 # training the model
 predictions = model.predict(x_test_scale)
 print(history.history.keys())
