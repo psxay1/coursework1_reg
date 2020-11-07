@@ -12,7 +12,7 @@ test_y = pp.y_test
 
 # Network parameters
 
-n_hidden1 = 20
+n_hidden1 = 45
 n_hidden2 = 20
 n_input = 11
 n_output = 1
@@ -38,8 +38,8 @@ w3 = tf.Variable(tf.random_normal([n_hidden2, n_output]))
 
 # defining the neural network (relu activation function)
 
-layer_1 = tf.nn.relu(tf.add(tf.matmul(X, w1), b1))
-layer_2 = tf.nn.relu(tf.add(tf.matmul(layer_1, w2), b2))
+layer_1 = tf.nn.sigmoid(tf.add(tf.matmul(X, w1), b1))
+layer_2 = tf.nn.sigmoid(tf.add(tf.matmul(layer_1, w2), b2))
 out_layer = tf.add(tf.matmul(layer_2, w3), b3)
 
 # defining cost and optimizer
