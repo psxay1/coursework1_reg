@@ -3,14 +3,12 @@ from keras.optimizers import SGD
 import preprocessing as pp
 import matplotlib.pyplot as plt
 from tensorflow.python.keras.layers import Dense
-
 # preprocessing.py is common processing file for all models in this project.. the data is split and normalized
 # normalized values are assigned to the model
 x_train_scale = pp.x_train
 x_test_scale = pp.x_test
 y_train_scale = pp.y_train
 y_test_scale = pp.y_test
-
 # using pre-defined keras sequential model
 model = tf.keras.models.Sequential()
 # defining the input layer 1 of the Neural network
