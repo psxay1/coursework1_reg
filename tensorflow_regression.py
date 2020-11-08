@@ -22,7 +22,6 @@ model.add(Dense(1, activation='relu'))
 # gives a synopsis of our neural network model
 model.summary()
 # optimization function is defined, using sgd: gradient descent optimizer with learning rate
-
 sgd = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
 # cost function is defined using mean square error mse, and mean absolute error mae
 model.compile(loss='mse', optimizer='sgd', metrics=['mse', 'mae'])

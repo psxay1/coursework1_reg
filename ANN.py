@@ -13,7 +13,7 @@ test_y = pp.y_test
 # Network parameters
 
 n_hidden1 = 45
-n_hidden2 = 20
+n_hidden2 = 25
 n_input = 11
 n_output = 1
 
@@ -55,9 +55,5 @@ with tf.Session() as sess:
     sess.run(init)
     for epoch in range(1500):
         opt, cost_val = sess.run([optimizer, cost], feed_dict={X: train_x, y: train_y})
-        pred = tf.equal(tf.argmax(out_layer, axis=1), tf.argmax(y, axis=1))
-        accuracy = tf.reduce_mean(tf.cast(pred, 'float'))
         if epoch % 100 == 0:
             print("Epoch", epoch, "--", "Cost", cost_val)
-            print("Accuracy on train set ", accuracy.eval({X: train_x, y: train_y}))
-            print("Accuracy on test set ", accuracy.eval({X: test_x, y: test_y}))
