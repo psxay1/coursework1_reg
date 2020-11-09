@@ -1,7 +1,7 @@
 import tensorflow as tf
 from keras.optimizers import SGD
 import preprocessing as pp
-import matplotlib.pyplot as plt
+from matplotlib.pyplot import ylabel, plot, legend, show, xlabel, title
 from tensorflow.python.keras.layers import Dense
 # preprocessing.py is common processing file for all models in this project.. the data is split and normalized
 # normalized values are assigned to the model
@@ -23,18 +23,21 @@ model.add(Dense(1, activation='relu'))
 model.summary()
 # optimization function is defined, using sgd: gradient descent optimizer with learning rate
 sgd = SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
+
+tf.keras.backend.set_epsilon(1)
+
 # cost function is defined using mean square error mse, and mean absolute error mae
-model.compile(loss='mse', optimizer='sgd', metrics=['mse', 'mae'])
+model.compile(loss='mse', optimizer='sgd', metrics=['mse', 'mae', 'mean_absolute_percentage_error', 'mean_squared_logarithmic_error'])
 # training the model
 history = model.fit(x_train_scale, y_train_scale, validation_data=(x_test_scale, y_test_scale), epochs=1000,
                     batch_size=150, verbose=1, validation_split=0.2)
 predictions = model.predict(x_test_scale)
 print(history.history.keys())
 # "Loss" plot for loss vs epoch, gives us information about accuracy
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('model loss')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(['train', 'test'], loc='upper left')
-plt.show()
+plot(history.history['loss'])
+plot(history.history['val_loss'])
+title('model loss')
+ylabel('loss')
+xlabel('epoch')
+legend(['train', 'test'], loc='upper left')
+show()

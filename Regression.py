@@ -1,5 +1,6 @@
 import tensorflow as tf
 import preprocessing as pp
+import matplotlib.pyplot as plt
 import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -25,7 +26,7 @@ training_epochs = 1500
 # Defining input and output
 
 X = tf.placeholder(tf.float32, [None, n_input])
-y = tf.placeholder(tf.float32, [None, n_output])
+Y = tf.placeholder(tf.float32, [None, n_output])
 
 # defining biases and weights
 
@@ -36,24 +37,38 @@ w1 = tf.Variable(tf.random_normal([n_input, n_hidden1]))
 w2 = tf.Variable(tf.random_normal([n_hidden1, n_hidden2]))
 w3 = tf.Variable(tf.random_normal([n_hidden2, n_output]))
 
+
 # defining the neural network (relu activation function)
 
-layer_1 = tf.nn.sigmoid(tf.add(tf.matmul(X, w1), b1))
-layer_2 = tf.nn.sigmoid(tf.add(tf.matmul(layer_1, w2), b2))
-out_layer = tf.add(tf.matmul(layer_2, w3), b3)
+def multilayer_perceptron(input_d):
+    layer_1 = tf.nn.sigmoid(tf.add(tf.matmul(X, w1), b1))
+    layer_2 = tf.nn.sigmoid(tf.add(tf.matmul(layer_1, w2), b2))
+    out_layer = tf.add(tf.matmul(layer_2, w3), b3)
+    return out_layer
+
+
+prediction = multilayer_perceptron(X)
 
 # defining cost and optimizer
 # learning rate 0.001
-
-cost = tf.reduce_mean(tf.math.squared_difference(out_layer, y))
+cost = tf.reduce_mean(tf.math.squared_difference(prediction, Y))
 optimizer = tf.train.GradientDescentOptimizer(learning_constant).minimize(cost)
 
 init = tf.global_variables_initializer()
 
-acc = []
+epoch_plot = []
+cost_plot = []
 with tf.Session() as sess:
     sess.run(init)
     for epoch in range(1500):
-        opt, cost_val = sess.run([optimizer, cost], feed_dict={X: train_x, y: train_y})
+        opt, cost_val = sess.run([optimizer, cost], feed_dict={X: train_x, Y: train_y})
+        epoch_plot.append(epoch)
+        cost_plot.append(cost_val)
         if epoch % 100 == 0:
             print("Epoch", epoch, "--", "Cost", cost_val)
+
+plt.plot(epoch_plot, cost_plot)
+plt.title('model loss')
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.show()
