@@ -1,5 +1,4 @@
 import data_loader as dl
-#from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
 # data = dl.load_data('data/winequality-red.csv')  # import data file

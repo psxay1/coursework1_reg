@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 def load_data(x):
     m = pd.read_csv(x, sep=';')
     m.head()
