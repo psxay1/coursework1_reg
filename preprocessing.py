@@ -10,9 +10,14 @@ df0_labels = dl.get_labels(df0, 'quality')
 
 #-----------------------------------------------------------------------------
 # data for kFold
-df_temp = df0
 features = df0_features.to_numpy()
 kFold_features = MinMaxScaler().fit_transform(features)
 labels = df0_labels.to_numpy().reshape(-1, 1)
 kFold_labels = MinMaxScaler().fit_transform(labels)
-print("jhseojbnsdkj")
+print("kbsojbsosr")
+#-----------------------------------------------------------------------------
+# data for testing
+features_test = kFold_features[0:500]
+labels_test = kFold_labels[0:500]
+
+plot_features = df0_features.to_numpy()[0:500]
