@@ -5,9 +5,18 @@ import preprocessing as pp
 import matplotlib.pyplot as plt
 from tensorflow.python.keras.layers import Dense
 from sklearn.model_selection import KFold
+from keras import backend as k
+from sklearn.metrics import mean_squared_error
+from math import sqrt
+import numpy as np
+
+# def root_mean_squared_error_loss(y_true,y_pred):
+#     return k.sqrt(k.mean(k.square(y_pred-y_true), axis=-1))
+#
+# def rmse(predictions, targets):
+#     return np.sqrt(((predictions - targets) ** 2).mean())
 
 # preprocessing.py is common processing file for all models in this project.. the data is split and normalized
-
 tf.keras.backend.set_epsilon(1)
 
 # cost function is defined using mean square error mse, and mean absolute error mae
@@ -15,7 +24,7 @@ kf = KFold(n_splits=10, shuffle=True)
 
 features = pp.kFold_features
 labels = pp.kFold_labels
-scores = []
+
 
 try:
     trained_model = keras.models.load_model('wine_model.h5')
@@ -34,6 +43,8 @@ except OSError:
     y_test_arr = []
     x_train_arr = []
     y_train_arr = []
+    rmse_arr = []
+
     for train_index, test_index in kf.split(features):
         x_train, x_test, y_train, y_test = features[train_index], features[test_index], labels[train_index], labels[
             test_index]
@@ -59,18 +70,32 @@ except OSError:
                       metrics=['mse', 'mae', 'mean_absolute_percentage_error', 'mean_squared_logarithmic_error'])
         x_test_arr.append(x_test)
         y_test_arr.append(y_test)
+        x_train_arr.append(x_train)
+        y_train_arr.append(y_train)
         history = model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=35,
                             batch_size=100, verbose=0)
-        score = model.evaluate(x_test, y_test)
-        scores.append(score)
 
-    # print("Last: ", scores[-1])
+        rmse = sqrt(model.evaluate(x_test, y_test)[0])
+        print("RMSE: --------------------",rmse)
+        rmse_arr.append(rmse)
+
+    avg_rmse = sum(rmse_arr)/len(rmse_arr)
+    print(avg_rmse)
+
     model.save('wine_model.h5')
+
+    y_pred = model.predict(features)
+
     # "Loss" plot for loss vs epoch, gives us information about accuracy
+
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
     plt.title('model loss')
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
+
+    y_pred = model.predict(x_test_arr)
+    plt.scatter(y_pred, y_test_arr)
     plt.show()
