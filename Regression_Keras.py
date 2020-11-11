@@ -52,6 +52,7 @@ def train_model():
         model.compile(loss='mse', optimizer='sgd',
                       metrics=['mse', 'mae', 'mean_absolute_percentage_error', 'mean_squared_logarithmic_error'])
 
+        # training the model on the number of epochs, training data, validaiton data and batch size
         history = model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=35,
                             batch_size=100, verbose=0)
 
@@ -65,7 +66,7 @@ def train_model():
     # Saving the trained model in a file
     model.save('wine_model.h5')
 
-    # "Loss" plot for loss vs epoch, gives us information about accuracy
+    # Plot for val_loss vs loss on the number of epochs
     plt.plot(history.history['loss'])
     plt.plot(history.history['val_loss'])
     plt.title('model loss')
